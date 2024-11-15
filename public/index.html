@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Resume</title>
+</head>
+<body>
+  <h1>Upload Resume</h1>
+  <form id="uploadForm">
+    <input type="file" id="resume" name="resume" accept=".pdf" required>
+    <button type="submit">Upload</button>
+  </form>
+  <h2>Extracted Skills:</h2>
+  <ul id="skillsList"></ul>
+
+  <script>
+   document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const formData = new FormData();
+  const fileInput = document.getElementById('resume');
+  if (fileInput.files.length === 0) {
+    alert('Please select a file to upload.');
+    return;
+  }
+  formData.append('resume', fileInput.files[0]);
+
+  try {
+    // Make the POST request
+    const response = await fetch('http://localhost:5000/upload', {
+        method: 'POST',
+        body: formData, // Correctly using FormData
+    });
+
+    console.log("Connection successful"); // Log here after fetch starts
+
+    // Check for response status
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Response error:', errorText);
+        alert('Error: ' + errorText);
+        return;
+    }
+
+    // Handle the response
+    const data = await response.json();
+    console.log('Connection established');
+    console.log('Received response:', data);
+} catch (error) {
+    console.error('Error during fetch:', error);
+    alert('An error occurred while uploading the file.');
+}
+
+
+});
+
+  </script>
+</body>
+</html>
