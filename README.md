@@ -1,2 +1,2 @@
 # naukri
-a test of NLP based job recommendation plaform
+a test of NLP based job recommendation platform
